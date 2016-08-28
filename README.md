@@ -6,7 +6,7 @@
 
 ## Starting the Database
 
-* cd $GOPATH/src/bketelsen/sqlx
+* cd $GOPATH/src/github.com/bketelsen/sqlx
 * ./run.sh
 
 ## Stopping the Database
