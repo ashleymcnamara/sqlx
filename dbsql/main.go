@@ -29,13 +29,10 @@ var (
 )
 
 func connectionString() string {
-
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", mysqluser, mysqlpw, mysqlhost, mysqlport, mysqldb)
-
 }
 
 func main() {
-	// hardcoded here - don't do this :)
 	db, err := sql.Open("mysql",
 		connectionString())
 	if err != nil {
