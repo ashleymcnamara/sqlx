@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -18,10 +20,24 @@ type Employee struct {
 	HireDate  time.Time
 }
 
+var (
+	mysqluser = os.Getenv("MYSQL_ENV_MYSQL_USER")
+	mysqlpw   = os.Getenv("MYSQL_ENV_MYSQL_PASSWORD")
+	mysqlhost = os.Getenv("MYSQL_PORT_3306_TCP_ADDR")
+	mysqlport = os.Getenv("MYSQL_PORT_3306_TCP_PORT")
+	mysqldb   = os.Getenv("MYSQL_ENV_MYSQL_DATABASE")
+)
+
+func connectionString() string {
+
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", mysqluser, mysqlpw, mysqlhost, mysqlport, mysqldb)
+
+}
+
 func main() {
 	// hardcoded here - don't do this :)
 	db, err := sql.Open("mysql",
-		"docker:docker@tcp(127.0.0.1:3306)/employees?parseTime=true")
+		connectionString())
 	if err != nil {
 		log.Fatal(err)
 	}
