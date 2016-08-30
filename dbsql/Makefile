@@ -34,6 +34,14 @@ run:
 	@echo "$(OK_COLOR)==> Building$(NO_COLOR)"
 	go run main.go
 
+dockerbuild:
+	@echo "$(OK_COLOR)==> Docker Build$(NO_COLOR)"
+	docker build -t bketelsen/dbsql .
+
+dockerrun:
+	@echo "$(OK_COLOR)==> Docker Run$(NO_COLOR)"
+	docker run -t -i --link empdb:mysql bketelsen/dbsql
+
 all: format lint test
 
 # pretty colors found here!
