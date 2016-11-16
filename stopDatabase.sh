@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker kill empdb
-docker rm empdb
+docker kill `id -u -n`-empdb
+docker rm `id -u -n`-empdb

@@ -70,7 +70,7 @@ func main() {
 
 	elvis, err := GetElvis(me, 500001)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
 	log.Println(elvis)
 
