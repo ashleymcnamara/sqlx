@@ -31,8 +31,10 @@ type Employee struct {
 
 var (
 	mysqluser = os.Getenv("MYSQL_ENV_MYSQL_USER")
+
 	mysqlpw   = os.Getenv("MYSQL_ENV_MYSQL_PASSWORD")
 	mysqlhost = os.Getenv("MYSQL_PORT_3306_TCP_ADDR")
+
 	mysqlport = os.Getenv("MYSQL_PORT_3306_TCP_PORT")
 	mysqldb   = os.Getenv("MYSQL_ENV_MYSQL_DATABASE")
 )

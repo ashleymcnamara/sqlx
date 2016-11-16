@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -19,10 +21,27 @@ type Employee struct {
 	HireDate  time.Time `db:"hire_date"`
 }
 
+type EmployeeReader interface {
+	Get(id int) (*Employee, error)
+}
+
+var (
+	mysqluser = os.Getenv("MYSQL_ENV_MYSQL_USER")
+
+	mysqlpw   = os.Getenv("MYSQL_ENV_MYSQL_PASSWORD")
+	mysqlhost = os.Getenv("MYSQL_PORT_3306_TCP_ADDR")
+
+	mysqlport = os.Getenv("MYSQL_PORT_3306_TCP_PORT")
+	mysqldb   = os.Getenv("MYSQL_ENV_MYSQL_DATABASE")
+)
+
+func connectionString() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", mysqluser, mysqlpw, mysqlhost, mysqlport, mysqldb)
+}
+
 func main() {
-	// hardcoded here - don't do this :)
 	db, err := sqlx.Open("mysql",
-		"docker:docker@tcp(127.0.0.1:3306)/employees?parseTime=true")
+		connectionString())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,13 +54,21 @@ func main() {
 		FirstName: "Elvis",
 		LastName:  "Presley",
 		Gender:    "M",
-		BirthDate: time.Parse("Jan 8, 1935"),
+		BirthDate: time.Now(),
 		HireDate:  time.Now(),
 	}
-	err = insertEmployee(e)
 
+	log.Println("Inserting Elvis")
+	err = insertEmployee(db, e)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("Inserted Elvis")
 	// Prove it worked
-	elvis, err := getElvis(db)
+
+	me := &MysqlEmployee{db: db}
+
+	elvis, err := GetElvis(me, 500001)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -49,20 +76,23 @@ func main() {
 
 }
 
+type MysqlEmployee struct {
+	db *sqlx.DB
+}
+
 func insertEmployee(db *sqlx.DB, e *Employee) error {
-	// Assignment -- fill in the blanks
-	tx := db.MustBegin()
-	// hint - use tx.NamedExec()
+	// assignment
+	var err error
 
-	//your insert here
-
-	err := tx.Commit()
 	return err
 }
 
-func getElvis(db *sqlx.DB) (*Employee, error) {
-	var king Employee
-	err := db.Get(&king, "select emp_no, first_name, last_name from employees where emp_no=?", 500001)
-	return &king, err
+func (e *MysqlEmployee) Get(id int) (*Employee, error) {
+	var emp Employee
+	err := e.db.Get(&emp, "select emp_no, first_name, last_name from employees where emp_no=?", id)
+	return &emp, err
+}
 
+func GetElvis(er EmployeeReader, id int) (*Employee, error) {
+	return er.Get(id)
 }

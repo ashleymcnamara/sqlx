@@ -1,28 +1,49 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
+// Cat is a struct that scratches
+type Cat struct{}
+
 // Employee represents the employee model in the database
 // 'db' struct tags tell sqlx how to map data
 type Employee struct {
-	Number    int       `db:"emp_no"`
+	Number int `db:"emp_no"`
+
 	Birthdate time.Time `db:"birth_date"`
 	FirstName string    `db:"first_name"`
-	LastName  string    `db:"last_name"`
-	Gender    string    `db:"gender"`
-	HireDate  time.Time `db:"hire_date"`
+
+	LastName string `db:"last_name"`
+	Gender   string `db:"gender"`
+
+	HireDate time.Time `db:"hire_date"`
+}
+
+var (
+	mysqluser = os.Getenv("MYSQL_ENV_MYSQL_USER")
+
+	mysqlpw   = os.Getenv("MYSQL_ENV_MYSQL_PASSWORD")
+	mysqlhost = os.Getenv("MYSQL_PORT_3306_TCP_ADDR")
+
+	mysqlport = os.Getenv("MYSQL_PORT_3306_TCP_PORT")
+	mysqldb   = os.Getenv("MYSQL_ENV_MYSQL_DATABASE")
+)
+
+func connectionString() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", mysqluser, mysqlpw, mysqlhost, mysqlport, mysqldb)
 }
 
 func main() {
-	// hardcoded here - don't do this :)
 	db, err := sqlx.Open("mysql",
-		"docker:docker@tcp(127.0.0.1:3306)/employees?parseTime=true")
+		connectionString())
 	if err != nil {
 		log.Fatal(err)
 	}
