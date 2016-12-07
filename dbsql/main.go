@@ -51,7 +51,7 @@ func main() {
 	}
 
 	for _, emp := range employees {
-		log.Println("Struct:", emp.Number, emp.FirstName, emp.LastName)
+		log.Println("Employee Struct:", emp.Number, emp.FirstName, emp.LastName)
 	}
 
 }

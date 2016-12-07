@@ -40,7 +40,7 @@ dockerbuild:
 
 dockerrun:
 	@echo "$(OK_COLOR)==> Docker Run$(NO_COLOR)"
-	docker run -t -i --link empdb:mysql bketelsen/sqlxexec
+	docker run -t -i --link `id -u -n`-empdb:mysql bketelsen/sqlxexec
 
 all: format lint test
 

@@ -10,6 +10,9 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// Cat is a struct that scratches
+type Cat struct{}
+
 // Employee represents the employee model in the database
 // 'db' struct tags tell sqlx how to map data
 type Employee struct {
@@ -39,7 +42,6 @@ func connectionString() string {
 }
 
 func main() {
-	// hardcoded here - don't do this :)
 	db, err := sqlx.Open("mysql",
 		connectionString())
 	if err != nil {
