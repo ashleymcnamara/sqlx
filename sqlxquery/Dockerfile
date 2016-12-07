@@ -1,3 +1,2 @@
-FROM alpine
-ADD sqlxquery /
-CMD /sqlxquery
+FROM golang:1.7-onbuild
+

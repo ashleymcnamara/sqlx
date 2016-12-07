@@ -1,3 +1,3 @@
-FROM alpine
+FROM ubuntu
 ADD dbsql /dbsql
 CMD /dbsql
