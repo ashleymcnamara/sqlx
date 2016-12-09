@@ -82,8 +82,29 @@ func noStructs(db *sql.DB) error {
 func withStructs(db *sql.DB) ([]*Employee, error) {
 	// we'll return this
 	var employees []*Employee
-	var err error
-	// assignment
+	var (
+		emp_no int
+		fname  string
+		lname  string
+	)
+	rows, err := db.Query("select emp_no, first_name, last_name  from employees limit 10")
+	if err != nil {
+		return employees, err
+	}
 
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&emp_no, &fname, &lname)
+		if err != nil {
+			return employees, err
+		}
+		emp := &Employee{
+			Number:    emp_no,
+			FirstName: fname,
+			LastName:  lname,
+		}
+		employees = append(employees, emp)
+	}
+	err = rows.Err()
 	return employees, err
 }

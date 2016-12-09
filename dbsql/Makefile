@@ -28,7 +28,7 @@ lint:
 
 build:
 	@echo "$(OK_COLOR)==> Building$(NO_COLOR)"
-	go build .
+	GOOS=linux GOARCH=amd64 go build .
 
 run:
 	@echo "$(OK_COLOR)==> Building$(NO_COLOR)"
@@ -38,7 +38,7 @@ dockerbuild: build
 	@echo "$(OK_COLOR)==> Docker Build$(NO_COLOR)"
 	docker build -t bketelsen/dbsql .
 
-dockerrun: 
+dockerrun: dockerbuild
 	@echo "$(OK_COLOR)==> Docker Run$(NO_COLOR)"
 	docker run -t -i --link `id -u -n`-empdb:mysql bketelsen/dbsql
 

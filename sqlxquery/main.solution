@@ -93,7 +93,7 @@ func better(db *sqlx.DB) ([]*Employee, error) {
 
 func best(db *sqlx.DB) ([]*Employee, error) {
 	var employees []*Employee
-	// Use sqlx Select() function to finish
+	err := db.Select(&employees, "select emp_no, first_name, last_name  from employees limit 10")
 	return employees, err
 
 }

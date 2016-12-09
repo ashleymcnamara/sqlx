@@ -28,7 +28,7 @@ lint:
 
 build:
 	@echo "$(OK_COLOR)==> Building$(NO_COLOR)"
-	go build .
+	GOOS=linux GOARCH=amd64 go build .
 
 run:
 	@echo "$(OK_COLOR)==> Building$(NO_COLOR)"
@@ -42,7 +42,7 @@ dockerrun: dockerbuild
 	@echo "$(OK_COLOR)==> Docker Run$(NO_COLOR)"
 	docker run -t -i --link `id -n -u`-empdb:mysql bketelsen/sqlxquery
 
-all: format lint test build dockerbuild
+all: format lint test build dockerbuild 
 
 # pretty colors found here!
 # https://gist.github.com/akalyaev/9682712
