@@ -83,8 +83,11 @@ type MysqlEmployee struct {
 func insertEmployee(db *sqlx.DB, e *Employee) error {
 	// assignment
 	var err error
-	// Insert employee
-
+	res, err := db.Exec("insert into employees(emp_no,first_name,last_name,birth_date,hire_date) values (?,?,?,?,?)", e.Number, e.FirstName, e.LastName, e.BirthDate, e.HireDate)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res.RowsAffected())
 	return err
 }
 

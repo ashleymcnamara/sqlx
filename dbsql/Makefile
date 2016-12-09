@@ -38,7 +38,7 @@ dockerbuild: build
 	@echo "$(OK_COLOR)==> Docker Build$(NO_COLOR)"
 	docker build -t bketelsen/dbsql .
 
-dockerrun: build dockerbuild
+dockerrun: 
 	@echo "$(OK_COLOR)==> Docker Run$(NO_COLOR)"
 	docker run -t -i --link `id -u -n`-empdb:mysql bketelsen/dbsql
 
